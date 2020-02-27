@@ -4,9 +4,7 @@ import com.cwjee.community.mapper.QuestionMapper;
 import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.model.Question;
 import com.cwjee.community.model.User;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +35,9 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam(value = "title",required = false) String title,
-            @RequestParam("description",required = false) String description,
-            @RequestParam("tag",required = false)String tag,
+            @RequestParam(name = "title",required = false) String title,
+            @RequestParam(name = "description", required = false) String description,
+            @RequestParam(name = "tag",required = false)String tag,
             HttpServletRequest request,
             Model model){
 

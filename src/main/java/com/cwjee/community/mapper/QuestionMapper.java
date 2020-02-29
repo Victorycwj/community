@@ -15,10 +15,12 @@ import java.util.List;
 @Mapper
 public interface QuestionMapper {
 
-    @Select("select * from COMMUNITY.SCHEMA_USER.QUESTION")
-    List<Question> list();
+    @Select("select * from COMMUNITY.SCHEMA_USER.QUESTION limit #{offset},#{size}")
+    List<Question> list(Integer offset, Integer size);
 
     @Insert("insert into COMMUNITY.SCHEMA_USER.QUESTION(title,description,gmt_create,gmt_modified,creator,tag) values(#{title},#{description},#{gmtCreate},#{gmtModified},#{creator},#{tag})")
     void create(Question question);
 
+    @Select("select count(1) from COMMUNITY.SCHEMA_USER.QUESTION")
+    Integer count();
 }

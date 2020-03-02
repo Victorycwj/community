@@ -23,4 +23,11 @@ public interface QuestionMapper {
 
     @Select("select count(1) from COMMUNITY.SCHEMA_USER.QUESTION")
     Integer count();
+
+
+    @Select("select count(1) from COMMUNITY.SCHEMA_USER.QUESTION")
+    Integer countByUserId(Long userId);
+
+    @Select("select * from COMMUNITY.SCHEMA_USER.QUESTION where creator=#{userId} limit #{offset},#{size}")
+    List<Question> listByUserId(Long userId, Integer offset, Integer size);
 }

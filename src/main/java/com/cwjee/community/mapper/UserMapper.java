@@ -21,5 +21,7 @@ public interface UserMapper {
     User findByToken(@Param("token") String token);
 
     @Select("select * from COMMUNITY.SCHEMA_USER.USER where id = #{id} ")
-    User findById(@Param("id") Integer id);
+    User findById(@Param("id") long id);
+
+
 }

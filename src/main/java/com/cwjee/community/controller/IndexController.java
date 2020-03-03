@@ -1,7 +1,6 @@
 package com.cwjee.community.controller;
 
 import com.cwjee.community.dto.PaginationDTO;
-import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
 
-    @Autowired
-    UserMapper userMapper;
 
     @Autowired
     QuestionService questionService;

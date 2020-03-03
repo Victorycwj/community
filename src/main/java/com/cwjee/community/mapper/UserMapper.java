@@ -1,10 +1,7 @@
 package com.cwjee.community.mapper;
 
 import com.cwjee.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author Victory
@@ -23,5 +20,6 @@ public interface UserMapper {
     @Select("select * from COMMUNITY.SCHEMA_USER.USER where account_id = #{id} ")
     User findById(@Param("id") long id);
 
-
+    @Update("update COMMUNITY.SCHEMA_USER.USER set name=#{name},token=#{token},gmt_modified=#{gmtModified},avatar_url=#{avatarUrl} where account_id = #{accountId} ")
+    void update(User user);
 }

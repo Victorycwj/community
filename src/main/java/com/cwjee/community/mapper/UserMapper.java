@@ -20,7 +20,7 @@ public interface UserMapper {
     @Select("select * from COMMUNITY.SCHEMA_USER.USER where token = #{token}")
     User findByToken(@Param("token") String token);
 
-    @Select("select * from COMMUNITY.SCHEMA_USER.USER where id = #{id} ")
+    @Select("select * from COMMUNITY.SCHEMA_USER.USER where account_id = #{id} ")
     User findById(@Param("id") long id);
 
 

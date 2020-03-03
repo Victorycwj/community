@@ -3,7 +3,9 @@ package com.cwjee.community.mapper;
 import com.cwjee.community.model.Question;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -25,9 +27,12 @@ public interface QuestionMapper {
     Integer count();
 
 
-    @Select("select count(1) from COMMUNITY.SCHEMA_USER.QUESTION")
+    @Select("select count(1) from  COMMUNITY.SCHEMA_USER.QUESTION where creator=#{userId}")
     Integer countByUserId(Long userId);
 
     @Select("select * from COMMUNITY.SCHEMA_USER.QUESTION where creator=#{userId} limit #{offset},#{size}")
     List<Question> listByUserId(Long userId, Integer offset, Integer size);
+
+    @Select("select * from COMMUNITY.SCHEMA_USER.QUESTION where id=#{id}")
+    Question getById(@Param("id") Integer id);
 }

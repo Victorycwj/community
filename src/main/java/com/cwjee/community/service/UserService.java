@@ -2,8 +2,11 @@ package com.cwjee.community.service;
 
 import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.model.User;
+import com.cwjee.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Victory
@@ -18,19 +21,27 @@ public class UserService {
 
 
     public void createOrUpdate(User user) {
-        long accountId = user.getAccountId();
-        User dbuser = userMapper.findById(accountId);
-        if (dbuser == null){
+
+        UserExample example = new UserExample();
+        example.createCriteria().
+                andAccountIdEqualTo(user.getAccountId());
+        List<User> users = userMapper.selectByExample(example);
+        if (users.size() == 0){
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
         }else {
-            dbuser.setAvatarUrl(user.getAvatarUrl());
-            dbuser.setGmtModified(System.currentTimeMillis());
-            dbuser.setName(user.getName());
-            dbuser.setToken(user.getToken());
+            User dbUser = users.get(0);
 
-            userMapper.update(dbuser);
+            User updateUser = new User();
+            updateUser.setAvatarUrl(user.getAvatarUrl());
+            updateUser.setGmtModified(System.currentTimeMillis());
+            updateUser.setName(user.getName());
+            updateUser.setToken(user.getToken());
+            UserExample example1 = new UserExample();
+            example1.createCriteria()
+                    .andIdEqualTo(dbUser.getId());
+            userMapper.updateByExampleSelective(updateUser, example1);
         }
 
     }

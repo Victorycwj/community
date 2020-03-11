@@ -4,6 +4,7 @@ import com.cwjee.community.dto.PaginationDTO;
 import com.cwjee.community.dto.QuestionDTO;
 import com.cwjee.community.exception.CustomizeErrorCode;
 import com.cwjee.community.exception.CustomizeException;
+import com.cwjee.community.mapper.QuestionExtMapper;
 import com.cwjee.community.mapper.QuestionMapper;
 import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.model.Question;
@@ -31,6 +32,8 @@ public class QuestionService {
     QuestionMapper questionMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size){
 
@@ -102,8 +105,8 @@ public class QuestionService {
 
     }
 
-    public QuestionDTO getById(long id) {
-        Question question = questionMapper.selectByPrimaryKey((int) id);
+    public QuestionDTO getById(int id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null){
             throw new CustomizeException( CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
@@ -127,5 +130,10 @@ public class QuestionService {
             question.setGmtModified(System.currentTimeMillis());
             questionMapper.updateByPrimaryKeySelective(question);
         }
+    }
+
+    public void inView(int id) {
+        Question question = questionMapper.selectByPrimaryKey(id);
+        questionExtMapper.incView(question);
     }
 }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/3/10 21:42:45
  * @decription
  */
-@ControllerAdvice("com.cwjee.community.controller")
+@ControllerAdvice
 public class CustomizeExceptionHandler {
 
     @ExceptionHandler(Exception.class)

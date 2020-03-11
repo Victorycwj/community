@@ -2,6 +2,8 @@ package com.cwjee.community.service;
 
 import com.cwjee.community.dto.PaginationDTO;
 import com.cwjee.community.dto.QuestionDTO;
+import com.cwjee.community.exception.CustomizeErrorCode;
+import com.cwjee.community.exception.CustomizeException;
 import com.cwjee.community.mapper.QuestionMapper;
 import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.model.Question;
@@ -102,8 +104,10 @@ public class QuestionService {
 
     public QuestionDTO getById(long id) {
         Question question = questionMapper.selectByPrimaryKey((int) id);
+        if (question == null){
+            throw new CustomizeException( CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
-
         BeanUtils.copyProperties(question,questionDTO);
         UserExample userExample = new UserExample();
         userExample.createCriteria()

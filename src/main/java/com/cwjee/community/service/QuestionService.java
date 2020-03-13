@@ -105,7 +105,7 @@ public class QuestionService {
 
     }
 
-    public QuestionDTO getById(int id) {
+    public QuestionDTO getById(long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null){
             throw new CustomizeException( CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -125,6 +125,9 @@ public class QuestionService {
         if (question.getId() == null){
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setLikeCount(0);
+            question.setCommentCount(0);
             questionMapper.insertSelective(question);
         }else {
             question.setGmtModified(System.currentTimeMillis());
@@ -132,7 +135,7 @@ public class QuestionService {
         }
     }
 
-    public void inView(int id) {
+    public void inView(long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         questionExtMapper.incView(question);
     }

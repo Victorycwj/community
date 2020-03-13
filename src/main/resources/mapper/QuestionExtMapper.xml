@@ -25,4 +25,10 @@
     where id = #{id};
 
   </update>
+    <update id="incCommentCount" parameterType="com.cwjee.community.model.Question">
+      update SCHEMA_USER.QUESTION
+      set
+        COMMENT_COUNT = COMMENT_COUNT + 1
+      where id = #{id};
+    </update>
 </mapper>

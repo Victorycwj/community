@@ -1,36 +1,57 @@
 package com.cwjee.community.advice;
 
+import com.alibaba.fastjson.JSON;
+import com.cwjee.community.dto.ResultDTO;
+import com.cwjee.community.exception.CustomizeErrorCode;
 import com.cwjee.community.exception.CustomizeException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author Victory
  * @date 2020/3/10 21:42:45
  * @decription
  */
-@ControllerAdvice
+@ControllerAdvice()
 public class CustomizeExceptionHandler {
 
-    @ExceptionHandler(value = {Exception.class})
-    ModelAndView handle(HttpServletRequest request, Exception e){
-
-        final String DEFAULT_ERROR_VIEW = "error";
-
-        ModelAndView modelAndView = new ModelAndView();
-        if (e instanceof CustomizeException){
-            modelAndView.addObject("exception", e);
-            modelAndView.addObject("message",e.getMessage());
-            modelAndView.setViewName(DEFAULT_ERROR_VIEW);
+    @ExceptionHandler(Exception.class)
+    ModelAndView handle(Throwable e, Model model, HttpServletRequest request, HttpServletResponse response) {
+        String contentType = request.getContentType();
+        System.out.println(e.toString());
+        if ("application/json".equals(contentType)) {
+            ResultDTO resultDTO;
+            // 返回 JSON
+            if (e instanceof CustomizeException) {
+                resultDTO = ResultDTO.errorOf((CustomizeException) e);
+            } else {
+                resultDTO = ResultDTO.errorOf(CustomizeErrorCode.SYS_ERROR);
+            }
+            try {
+                response.setContentType("application/json");
+                response.setStatus(200);
+                response.setCharacterEncoding("utf-8");
+                PrintWriter writer = response.getWriter();
+                writer.write(JSON.toJSONString(resultDTO));
+                writer.close();
+            } catch (IOException ioe) {
+            }
+            return null;
     }else {
-            modelAndView.addObject("message","服务冒烟啦，要不然稍等下再来试试~");
-            modelAndView.addObject("exception", e);
-            modelAndView.setViewName(DEFAULT_ERROR_VIEW);
-        }
-        return modelAndView;
-    }
 
+            if (e instanceof CustomizeException) {
+                model.addAttribute("message", e.getMessage());
+            } else {
+                model.addAttribute("message", CustomizeErrorCode.SYS_ERROR.getMessage());
+            }
+            return new ModelAndView("error");
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.cwjee.community.controller;
 
 import com.cwjee.community.dto.AccessTokenDTO;
 import com.cwjee.community.dto.GithubUser;
-import com.cwjee.community.mapper.UserMapper;
 import com.cwjee.community.model.User;
 import com.cwjee.community.provider.GithubProvider;
 import com.cwjee.community.service.UserService;

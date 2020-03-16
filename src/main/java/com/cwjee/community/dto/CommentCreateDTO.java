@@ -4,12 +4,10 @@ import com.cwjee.community.model.User;
 import lombok.Data;
 
 /**
- * @author Victory
- * @date 2020/3/16 14:58:08
- * @decription
+ * Created by codedrinker on 2019/6/2.
  */
 @Data
-public class CommentDTO {
+public class CommentCreateDTO {
     private Long id;
     private Long parentId;
     private Integer type;
@@ -19,6 +17,5 @@ public class CommentDTO {
     private Long likeCount;
     private Integer commentCount;
     private String content;
-
     private User user;
 }

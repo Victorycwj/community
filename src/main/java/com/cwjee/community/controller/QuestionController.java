@@ -2,6 +2,7 @@ package com.cwjee.community.controller;
 
 import com.cwjee.community.dto.CommentDTO;
 import com.cwjee.community.dto.QuestionDTO;
+import com.cwjee.community.enums.CommentTypeEnum;
 import com.cwjee.community.service.CommentService;
 import com.cwjee.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +27,19 @@ public class QuestionController {
     private CommentService commentService;
 
     @GetMapping("/question/{id}")
-    public String question(@PathVariable (name = "id")long id,
+    public String question(@PathVariable (name = "id")Long id,
                            Model model){
 
         QuestionDTO questionDTO = questionService.getById(id);
-        List<CommentDTO> comments = commentService.listByQuestionId(id);
+        List<QuestionDTO> relatedQuestions = questionService.selectRelated(questionDTO);
+        List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
 
         //累加阅读数
         questionService.inView(id);
         model.addAttribute("question",questionDTO);
         model.addAttribute("comments",comments);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 
